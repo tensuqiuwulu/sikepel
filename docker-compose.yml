@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "9001:9001"
+    depends_on:
+      - mariadb_sikepel
+    restart: always
+
+  mariadb_sikepel:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: si_kepel_master
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    ports:
+      - "33061:3306"
+    volumes:
+      - database_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  database_data:
+
+
+# version: '3.8'
+# services:
+#   app:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile-local
+#     volumes:
+#       - .:/var/www/html
+#     ports:
+#       - "9001:9001"
+#     restart: always
+
+#   composer:
+#     image: composer:2  # Use Composer image
+#     volumes:
+#       - .:/var/www/html  # Mount the project directory
+#     working_dir: /var/www/html
+#     command: install --ignore-platform-reqs  # Install Composer dependencies
